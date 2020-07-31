@@ -15,6 +15,14 @@ class BooksApp extends React.Component {
     showSearchPage: false
   }
 
+  changeShelf = (shelf, book) => {
+    BooksAPI.update(book, shelf)
+    // console.log(e, book)
+    this.setState((currentState) => ({
+      books: currentState.books.concat([book])
+    }))
+  }
+
   componentDidMount() {
     BooksAPI.getAll() // fetching all books from BooksAPI
       .then((books) => {
@@ -53,7 +61,7 @@ class BooksApp extends React.Component {
             <div className="list-books-title">
               <h1>MyReads</h1>
             </div>
-            <ListBooks books={this.state.books}/>
+            <ListBooks books={this.state.books} changeShelf={this.changeShelf}/>
             
             <div className="open-search">
               <button onClick={() => this.setState({ showSearchPage: true })}>Add a book</button>
