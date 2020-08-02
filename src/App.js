@@ -15,12 +15,14 @@ class BooksApp extends React.Component {
     showSearchPage: false
   }
 
-  changeShelf = (shelf, book) => {
-    BooksAPI.update(book, shelf)
-    // console.log(e, book)
-    this.setState((currentState) => ({
-      books: currentState.books.concat([book])
-    }))
+  // changeShelf = (newShelf, book) => {
+  //   BooksAPI.update(book, newShelf);
+  //   BooksAPI.getAll().then(data => this.setState({ books: data }))
+  // }
+
+  changeShelf = async (book, shelf) => {
+    BooksAPI.update(shelf, book);
+    BooksAPI.getAll().then(data => this.setState({ books: data }))
   }
 
   componentDidMount() {
