@@ -9,17 +9,11 @@ class SearchBook extends React.Component {
         query: '',
         searchResults: [],
     }
-    
-    handleQuery = (e) => {
-        e.preventDefault();
-        const query = e.target.value
+
+    getResults = (query) => {
         this.setState({
             query
         })
-        this.getResults(query);
-    }
-
-    getResults = (query) => {
         if (query) {
         BooksAPI.search(query)
             .then((results) => {
@@ -49,10 +43,20 @@ class SearchBook extends React.Component {
             searchResults: matchedBooks
         })
     }
+
+    // update shelf when changing book in Search page
+    // ensures shelf is updated when returning to home / page as well
+    updateBooks = (book, shelf) => {
+        let currentResults = this.state.searchResults;
+        const bookToUpdate = currentResults.filter (cBook => cBook.id === book.id)[0];
+        bookToUpdate.shelf = shelf;
+        this.setState({ searchResults: currentResults});
+        this.props.changeShelf(book, shelf)
+    }
     
     
     render () {
-        const { onAddBook, getResults, changeShelf, books } = this.props
+        const { getResults, changeShelf, books, updateBooks } = this.props
 
     return (
         <div className="search-books">
@@ -63,7 +67,7 @@ class SearchBook extends React.Component {
             </Link>
               <div className="search-books-input-wrapper">
                
-                <input type="text" placeholder="Search by title or author" onChange={this.handleQuery}/>
+                <input type="text" placeholder="Search by title or author" onChange={e => this.getResults(e.target.value)}/>
 
               </div>
             </div>
@@ -76,7 +80,7 @@ class SearchBook extends React.Component {
                            <div className="book-top">
                                <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url("${book.imageLinks && book.imageLinks.thumbnail}")` }}></div>
                                <div className="book-shelf-changer">
-                                   <select value={book.shelf} onChange={e => changeShelf(book, e.target.value)}>
+                                   <select value={book.shelf} onChange={e => this.updateBooks(book, e.target.value)}>
                                    <option value="move" disabled>Move to...</option>
                                    <option value="currentlyReading">Currently Reading</option>
                                    <option value="wantToRead">Want to Read</option>

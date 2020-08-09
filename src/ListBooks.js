@@ -15,19 +15,24 @@ class ListBooks extends React.Component {
                 <div>
                     <div className="list-books-content">
                         <BookShelf 
+                        shelfTitle="Current Reading"
                         books={books.filter(book => book.shelf === "currentlyReading")} 
                         changeShelf={changeShelf}
-                        shelfTitle="Current Reading"/>    
+                        />    
                     </div>
                     <div className="list-books-content">
-                        <BookShelf books={books.filter(book => book.shelf === "wantToRead")} 
+                        <BookShelf 
+                        shelfTitle="Want to Read"
+                        books={books.filter(book => book.shelf === "wantToRead")} 
                         changeShelf={changeShelf}
-                        shelfTitle="Want to Read"/> 
+                        /> 
                     </div>
                     <div className="list-books-content">
-                        <BookShelf books={books.filter(book => book.shelf === "read")} 
+                        <BookShelf 
+                        shelfTitle="Read"
+                        books={books.filter(book => book.shelf === "read")} 
                         changeShelf={changeShelf}
-                        shelfTitle="Read"/>         
+                        />         
                     </div>
                 </div>
             <Link 
